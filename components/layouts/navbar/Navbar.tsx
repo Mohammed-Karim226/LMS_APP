@@ -13,7 +13,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="flex justify-between items-center bg-white h-[90px] mx-auto px-6 py-2 max-sm:px-3">
+    <nav className="flex justify-between items-center bg-white h-[90px] mx-auto px-6 py-2 max-sm:px-3 fixed top-0 left-0 z-50 w-full shadow-md border-b border-neutral-200">
       <Link href={"/"}>
         <div className="flex justify-center items-center p-2 overflow-hidden">
           {/* <Image
