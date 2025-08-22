@@ -27,12 +27,12 @@ const Navbar = () => {
         </div>
       </Link>
       <div className="flex justify-center items-center gap-9">
-        <div className="flex justify-center items-center gap-9">
+        <div className="flex justify-center items-center gap-9 max-sm:gap-2">
           {navItems.map((item, idx) => (
             <Link
               key={idx}
               href={item.href}
-              className={`text-[18px] font-semibold  ${
+              className={`text-lg max-sm:text-xl font-semibold  ${
                 pathName === item.href
                   ? "text-red-500"
                   : "text-neutral-900 hover:text-red-500"

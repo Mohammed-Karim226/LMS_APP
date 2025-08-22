@@ -1,10 +1,13 @@
 "use client";
-
 import Image from "next/image";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import {
   Sheet,
   SheetClose,
@@ -15,7 +18,68 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const formSchema = z.object({
+  compnainonIcon: z
+    .custom<File | null>((file) => file instanceof File, {
+      message: "Please upload a valid file.",
+    })
+    .refine((file) => file?.type.startsWith("image/"), {
+      message: "File must be an image.",
+    }),
+  companionName: z
+    .string()
+    .min(2, { message: "Name must be at least 2 characters long." }),
+  subject: z.string().min(1, { message: "Subject is required." }),
+  topic: z.string().min(1, { message: "Topic is required." }),
+  voiceType: z.enum(["male", "female"], {
+    required_error: "Voice type is required.",
+  }),
+  speakingStyle: z.enum(["formal", "casual"], {
+    required_error: "Speaking style is required.",
+  }),
+  language: z.string().min(1, { message: "Language is required." }),
+});
+
 const CalledToAction = () => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      compnainonIcon: null,
+      companionName: "",
+      subject: "",
+      topic: "",
+      voiceType: "male",
+      speakingStyle: "casual",
+      language: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
   return (
     <div className="flex max-sm:mb-2 flex-col justify-center items-center w-[410px] max-sm:w-full max-xl:w-full h-[579px] rounded-4xl bg-neutral-800 shadow-lg p-6">
       <h2 className="bg-amber-300 text-black px-2 py-1 rounded-3xl text-sm font-medium capitalize">
@@ -53,28 +117,199 @@ const CalledToAction = () => {
         </SheetTrigger>
         <SheetContent className="max-sm:w-full">
           <SheetHeader>
-            <SheetTitle>Edit profile</SheetTitle>
+            <SheetTitle>Build Your Companion</SheetTitle>
             <SheetDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
+              Make changes here. Click save when you&apos;re done.
             </SheetDescription>
           </SheetHeader>
-          <div className="grid flex-1 auto-rows-min gap-6 px-4">
-            <div className="grid gap-3">
-              <Label htmlFor="sheet-demo-name">Name</Label>
-              <Input id="sheet-demo-name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="sheet-demo-username">Username</Label>
-              <Input id="sheet-demo-username" defaultValue="@peduarte" />
-            </div>
+
+          <div className="px-4 overflow-auto">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
+                <FormField
+                  control={form.control}
+                  name="compnainonIcon"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Companion icon</FormLabel>
+                      <FormControl>
+                        <div className="flex items-center gap-4">
+                          <Label
+                            htmlFor="companion-icon"
+                            className="cursor-pointer inline-flex items-center justify-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-sm font-medium border rounded-md w-full"
+                          >
+                            📤 Upload image
+                          </Label>
+
+                          <Input
+                            id="companion-icon"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) =>
+                              field.onChange(e.target.files?.[0] || null)
+                            }
+                            className="hidden" // hide native input
+                            ref={field.ref}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormDescription>
+                        Upload a representative image for your companion.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="companionName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Companion Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter companion name" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Choose a name that reflects your companion&apos;s
+                        personality.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="subject"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subject</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter subject" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        This is the subject your companion will help you with.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="topic"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Topic</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter topic" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        This is the topic your companion will help you with.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="voiceType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Voice Type</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a voice type" />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            <SelectItem value="male">Male</SelectItem>
+                            <SelectItem value="female">Female</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription>
+                        Choose a voice type that suits your companion&apos;s
+                        personality.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="speakingStyle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Speaking Style</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a speaking style" />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            <SelectItem value="formal">Formal</SelectItem>
+                            <SelectItem value="casual">Casual</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription>
+                        Choose a speaking style that suits your companion&apos;s
+                        personality.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="language"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>language</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select a language" />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            <SelectItem value="en">EN</SelectItem>
+                            <SelectItem value="ar">Ar</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription>
+                        Choose a language style that suits your
+                        companion&apos;s.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <SheetFooter className="px-0">
+                  <Button type="submit" className="cursor-pointer">
+                    Save changes
+                  </Button>
+                  <SheetClose asChild>
+                    <Button variant="outline">Close</Button>
+                  </SheetClose>
+                </SheetFooter>
+              </form>
+            </Form>
           </div>
-          <SheetFooter>
-            <Button type="submit">Save changes</Button>
-            <SheetClose asChild>
-              <Button variant="outline">Close</Button>
-            </SheetClose>
-          </SheetFooter>
         </SheetContent>
       </Sheet>
     </div>
