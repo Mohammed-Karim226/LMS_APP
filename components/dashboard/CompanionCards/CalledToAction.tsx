@@ -39,11 +39,10 @@ import {
 } from "@/components/ui/select";
 
 const formSchema = z.object({
-  compnainonIcon: z
-    .custom<File | null>((file) => file instanceof File, {
-      message: "Please upload a valid file.",
-    })
-    .refine((file) => file?.type.startsWith("image/"), {
+  companionIcon: z
+    .instanceof(File)
+    .optional()
+    .refine((file) => !file || file.type.startsWith("image/"), {
       message: "File must be an image.",
     }),
   companionName: z
@@ -58,19 +57,24 @@ const formSchema = z.object({
     required_error: "Speaking style is required.",
   }),
   language: z.string().min(1, { message: "Language is required." }),
+  duration: z.coerce
+    .number()
+    .min(1)
+    .max(120, { message: "Max duration is 120 mins." }),
 });
 
 const CalledToAction = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      compnainonIcon: null,
+      companionIcon: undefined,
       companionName: "",
       subject: "",
       topic: "",
       voiceType: "male",
       speakingStyle: "casual",
       language: "",
+      duration: 15,
     },
   });
 
@@ -85,7 +89,7 @@ const CalledToAction = () => {
       <h2 className="bg-amber-300 text-black px-2 py-1 rounded-3xl text-sm font-medium capitalize">
         Start learning your way.
       </h2>
-      <h1 className="text-3xl font-bold text-white text-center mt-3 mb-4 capitalize">
+      <h1 className="text-3xl font-bold text-white text-center mt-3 mb-4 capitalize max-sm:text-xl">
         Build a Personalize Learning Companion
       </h1>
       <p className="text-base font-normal text-stone-50 mb-6 text-center capitalize">
@@ -131,7 +135,7 @@ const CalledToAction = () => {
               >
                 <FormField
                   control={form.control}
-                  name="compnainonIcon"
+                  name="companionIcon"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Companion icon</FormLabel>
@@ -294,6 +298,26 @@ const CalledToAction = () => {
                       <FormDescription>
                         Choose a language style that suits your
                         companion&apos;s.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="duration"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Session Duration in Minutes</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter duration"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        This is the duration of the session in minutes.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

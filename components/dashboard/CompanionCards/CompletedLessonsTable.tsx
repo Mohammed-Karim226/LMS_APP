@@ -13,7 +13,7 @@ import Link from "next/link";
 
 const CompletedLessonsTable = () => {
   return (
-    <Table className="w-full max-w-4xl">
+    <Table className="w-full">
       <TableCaption>A list of your completed lessons.</TableCaption>
       <TableHeader>
         <TableRow>

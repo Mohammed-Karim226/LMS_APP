@@ -2,6 +2,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 // import Image from "next/image";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const Navbar = () => {
   const pathName = usePathname();
@@ -27,7 +34,8 @@ const Navbar = () => {
         </div>
       </Link>
       <div className="flex justify-center items-center gap-9">
-        <div className="flex justify-center items-center gap-9 max-sm:gap-2">
+        {/* create a mobile-navigation-bar! */}
+        <div className="flex justify-center items-center gap-9 max-sm:gap-2 max-sm:hidden">
           {navItems.map((item, idx) => (
             <Link
               key={idx}
@@ -42,7 +50,23 @@ const Navbar = () => {
             </Link>
           ))}
         </div>
-        <Link href={"/"}>Sign-In</Link>
+        <div className="flex justify-center items-center gap-2">
+          <SignedOut>
+            <SignInButton>
+              <button className="bg-[#a91b1b] text-white rounded-3xl font-medium text-sm py-1 px-4 cursor-pointer max-sm:px-8 max-sm:text-xs text-center">
+                Sign In
+              </button>
+            </SignInButton>
+            <SignUpButton>
+              <button className="bg-[#a91b1b] text-white rounded-3xl font-medium text-sm py-1 px-4 cursor-pointer max-sm:px-8 max-sm:text-xs text-center">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
       </div>
     </nav>
   );
