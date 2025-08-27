@@ -27,11 +27,13 @@ type Companion = Models.DocumentList<Models.Document> & {
 };
 
 interface CreateCompanion {
+  icon?: File;
   name: string;
   subject: string;
   topic: string;
-  voice: string;
-  style: string;
+  voiceType: "male" | "female";
+  speakingStyle: "formal" | "casual";
+  language: string;
   duration: number;
 }
 
@@ -64,7 +66,6 @@ interface Avatar {
   height: number;
   className?: string;
 }
-
 
 interface SavedMessage {
   role: "user" | "system" | "assistant";
