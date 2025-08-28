@@ -37,9 +37,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useDispatch } from "react-redux";
-import { createCompanionThunk } from "@/features/actions/companion.actions";
-import { TAppDispatch } from "@/store/redux";
+import { createCompanion } from "@/lib/companion.actions";
+
+// import { useDispatch } from "react-redux";
+// import { createCompanionThunk } from "@/features/actions/companion.actions";
+// import { TAppDispatch } from "@/store/redux";
 
 const formSchema = z.object({
   companionIcon: z
@@ -67,7 +69,7 @@ const formSchema = z.object({
 });
 
 const CalledToAction = () => {
-  const dispatch = useDispatch<TAppDispatch>();
+  // const dispatch = useDispatch<TAppDispatch>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -94,14 +96,12 @@ const CalledToAction = () => {
         language: values.language,
         duration: values.duration,
       };
-      const response = await dispatch(
-        createCompanionThunk({ formData: mappedValues })
-      ).unwrap();
+      const response = await createCompanion(mappedValues);
       console.log("Companion created successfully:", response);
       form.reset();
     } catch (error) {
       const err = error as { message: string };
-      console.log(err);
+      console.log("error from form: ", err);
     }
   }
 
