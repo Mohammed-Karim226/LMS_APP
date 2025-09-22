@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterSlice from "@/features/counter/counterSlice";
+import companionSlice from "@/features/counter/companionSlice";
 
 // Configure and export the store as a constant
 export const store = configureStore({
-  reducer: { counter: counterSlice }, // Add your reducers here
+  reducer: { counter: counterSlice, companion: companionSlice },
+  // No need to specify middleware unless you want to customize it
 });
 
 // Define the types for your store, state, and dispatch

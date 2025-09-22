@@ -37,6 +37,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { createCompanion } from "@/lib/companion.actions";
+
+// import { useDispatch } from "react-redux";
+// import { createCompanionThunk } from "@/features/actions/companion.actions";
+// import { TAppDispatch } from "@/store/redux";
 
 const formSchema = z.object({
   companionIcon: z
@@ -64,6 +69,8 @@ const formSchema = z.object({
 });
 
 const CalledToAction = () => {
+  // const dispatch = useDispatch<TAppDispatch>();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -78,10 +85,27 @@ const CalledToAction = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const mappedValues = {
+        icon: values.companionIcon,
+        name: values.companionName,
+        subject: values.subject,
+        topic: values.topic,
+        voiceType: values.voiceType,
+        speakingStyle: values.speakingStyle,
+        language: values.language,
+        duration: values.duration,
+      };
+      const response = await createCompanion(mappedValues);
+      if (!response.data) {
+        throw new Error("User not authonticated.");
+      }
+      form.reset();
+    } catch (error) {
+      const err = error as { message: string };
+      console.log("error from form: ", err);
+    }
   }
 
   return (
