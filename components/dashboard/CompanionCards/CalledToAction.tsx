@@ -70,6 +70,7 @@ const formSchema = z.object({
 
 const CalledToAction = () => {
   // const dispatch = useDispatch<TAppDispatch>();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -97,7 +98,9 @@ const CalledToAction = () => {
         duration: values.duration,
       };
       const response = await createCompanion(mappedValues);
-      console.log("Companion created successfully:", response);
+      if (!response.data) {
+        throw new Error("User not authonticated.");
+      }
       form.reset();
     } catch (error) {
       const err = error as { message: string };
