@@ -15,23 +15,7 @@ const Dashboard = () => {
           name="Subject Name"
           topic="Sample Topic"
           duration={30}
-          color="E5D0FF"
-        />
-        <CompanionCards
-          id={`2`}
-          title="Title"
-          name="Subject Name"
-          topic="Sample Topic"
-          duration={30}
-          color="FFDA6E"
-        />
-        <CompanionCards
-          id={`3`}
-          title="Title"
-          name="Subject Name"
-          topic="Sample Topic"
-          duration={30}
-          color="BDE7FF"
+          color="#E5D0FF"
         />
       </div>
       <div className="flex justify-between items-start w-full max-sm:flex-col max-xl:flex-col max-sm:items-start gap-6 mt-4 px-4 sm:px-6 lg:px-8">
