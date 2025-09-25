@@ -26,6 +26,20 @@ type Companion = Models.DocumentList<Models.Document> & {
   bookmarked: boolean;
 };
 
+interface ICompanion {
+  author: string;
+  created_at: string; // ISO date string
+  duration: number;
+  icon: string;
+  id: string;
+  language: string;
+  name: string;
+  speakingStyle: "formal" | "informal" | string; // narrow union if possible
+  subject: string;
+  topic: string;
+  voiceType: "male" | "female" | string; // narrow union if possible
+}
+
 interface CreateCompanion {
   icon?: File;
   name: string;

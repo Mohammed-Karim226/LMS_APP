@@ -36,7 +36,6 @@ const buttonVariants = {
   tap: { scale: 0.9, rotate: -5, transition: { duration: 0.2 } },
 };
 
-
 const CompanionCards = ({
   id,
   title,
@@ -66,7 +65,7 @@ const CompanionCards = ({
         boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
       }}
       className={cn(
-        "flex flex-col justify-between items-start gap-6 px-8 py-3 w-[410px] h-[340px] rounded-3xl overflow-hidden border border-neutral-500 max-sm:w-[340px] max-sm:h-[270px] max-sm:px-6 max-sm:py-4 relative"
+        "flex flex-col justify-between items-start gap-6 px-4 py-4 w-[410px] h-[340px] rounded-3xl overflow-hidden border border-neutral-500 max-sm:w-[340px] max-sm:h-[360px] max-sm:px-6 max-sm:py-4 relative"
       )}
     >
       <div className="absolute inset-0 bg-white/5 backdrop-blur-sm rounded-3xl pointer-events-none" />
@@ -140,22 +139,26 @@ const CompanionCards = ({
           </span>
         </motion.div>
         {/* Stats Section */}
-        <motion.div 
+        <motion.div
           className="flex justify-between items-center w-full gap-6 text-neutral-900/80 max-sm:flex-col max-sm:gap-2 max-sm:items-start"
           initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0, transition: { delay: 0.5, duration: 0.4 } }}
+          animate={{
+            opacity: 1,
+            x: 0,
+            transition: { delay: 0.5, duration: 0.4 },
+          }}
         >
           {/* Rating */}
           <div className="flex items-center gap-1">
             <motion.div
-              className="flex"
+              className="flex bg-gray-900/10 backdrop-blur-sm rounded-full px-2 py-[3px] gap-0.5"
               initial="unfilled"
-              animate={{ 
-                scale: 1 
+              animate={{
+                scale: 1,
               }}
               variants={{
                 unfilled: { scale: 0.9 },
-                filled: { scale: 1 }
+                filled: { scale: 1 },
               }}
             >
               {[...Array(5)].map((_, i) => (
@@ -171,21 +174,23 @@ const CompanionCards = ({
                 >
                   <motion.path
                     d="M12 2L15.09 8.26L22 9L17 14.74L18.18 21.5L12 17.77L5.82 21.5L7 14.74L2 9L8.91 8.26L12 2Z"
-                    animate={{ 
+                    animate={{
                       fillOpacity: i < rating ? 1 : 0.3,
-                      scale: i < rating ? [1, 1.1, 1] : 1
+                      scale: i < rating ? [1, 1.1, 1] : 1,
                     }}
-                    transition={{ 
-                      duration: 0.3, 
-                      repeat: Infinity, 
+                    transition={{
+                      duration: 0.3,
+                      repeat: Infinity,
                       repeatType: "reverse",
-                      delay: i * 0.1 
+                      delay: i * 0.1,
                     }}
                   />
                 </motion.svg>
               ))}
             </motion.div>
-            <span className="text-sm font-medium text-neutral-700">({rating})</span>
+            <span className="text-sm font-medium text-neutral-700">
+              ({rating})
+            </span>
           </div>
           {/* Users will be a dynamic part using server tech for each view that each user open it */}
           <div className="flex items-center gap-1">
@@ -202,14 +207,16 @@ const CompanionCards = ({
               <circle cx="20" cy="21" r="1" />
               <path d="M1 1H23M4 5H20M8 15H16" />
             </motion.svg>
-            <span className="text-sm font-medium text-neutral-700">{numUsers.toLocaleString()} users</span>
+            <span className="text-sm font-medium text-neutral-700">
+              {numUsers.toLocaleString()} users
+            </span>
           </div>
         </motion.div>
       </div>
       <motion.div className="w-full z-10" whileHover={{ y: -2 }}>
         <Link
-          href={`/companions/${id}`} // Fixed to use dynamic id
-          className="w-full block bg-black/90 cursor-pointer transition-all duration-300 rounded-xl text-white text-center py-3 font-semibold text-base shadow-md hover:bg-black hover:shadow-lg"
+          href={`/companions/${id}`}
+          className="w-full block bg-black/90 cursor-pointer transition-all duration-300 rounded-full text-white text-center py-3 font-semibold text-base shadow-md hover:bg-black hover:shadow-lg"
         >
           Launch Lesson
         </Link>

@@ -1,17 +1,24 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, SetStateAction } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  SetStateAction,
+} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Search, X, Mic, Sparkles, Users, Star } from "lucide-react";
 
 const mockSuggestions = [
-  "Algebra Basics",
-  "Quantum Physics",
-  "Machine Learning",
-  "Organic Chemistry",
-  "World History",
+  "maths",
+  "language",
+  "science",
+  "history",
+  "coding",
+  "economics",
 ];
 
 interface SearchInputProps {
@@ -93,7 +100,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ onResultsChange }) => {
     animate: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.4, ease: "easeInOut" as const}, // valid easing function
+      transition: { duration: 0.4, ease: "easeInOut" as const }, // valid easing function
     },
   };
 
@@ -116,7 +123,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ onResultsChange }) => {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.2, ease: "easeInOut" as const}, // valid easing function
+      transition: { duration: 0.2, ease: "easeInOut" as const }, // valid easing function
     },
     exit: { opacity: 0, y: 10, scale: 0.95, transition: { duration: 0.15 } },
   };
@@ -180,7 +187,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ onResultsChange }) => {
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 200)} // Delay to allow suggestion click
-          placeholder="Discover topics like 'Algebra' or 'Physics'..."
+          placeholder="Discover topics ..."
           className={cn(
             "w-full pl-12 pr-12 py-4 text-base rounded-2xl border-2 bg-white/90 backdrop-blur-md focus:outline-none transition-all duration-300 placeholder:text-gray-500",
             "shadow-lg hover:shadow-xl"
@@ -243,7 +250,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ onResultsChange }) => {
 
       {/* Stats Bar */}
       <motion.div
-        className="flex justify-between items-center mt-3 px-3 py-2 bg-gray-50/50 rounded-xl text-xs text-gray-600"
+        className="flex justify-between items-center mt-3 px-3 py-2 bg-cyan-100/50 rounded-xl text-xs text-gray-600"
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: 1, height: "auto" }}
         transition={{ delay: 0.3, duration: 0.3 }}

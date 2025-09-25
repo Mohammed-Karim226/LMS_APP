@@ -3,7 +3,7 @@ import { GetAllCompanions } from "@/lib/companion.actions";
 import CompanionCards from "@/components/dashboard/CompanionCards/CompanionCards";
 import { getSubjectColor } from "@/lib/utils";
 import SearchInput from "@/components/dashboard/Filters/SearchInput";
-import SubjectFilter from "@/components/dashboard/Filters/SubjectFilter";
+// import SubjectFilter from "@/components/dashboard/Filters/SubjectFilter";
 
 const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
   const filters = await searchParams;
@@ -26,16 +26,17 @@ const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
       </div>
     );
   }
+  console.log(companions);
 
   return (
-    <div className="mt-28 flex flex-col justify-center items-center px-6 gap-2">
-      <div className="flex flex-col justify-between w-full">
+    <div className="mt-28 flex flex-col justify-center items-center px-6 gap-2 relative">
+      <div className="flex flex-col justify-between w-full ">
         <h2 className="font-bold text-3xl max-sm:text-2xl">
           Companion Library
         </h2>
         <div className="flex justify-center items-end gap-2 w-full max-sm:flex-col max-sm:items-start">
           <SearchInput onResultsChange={undefined} />
-          <SubjectFilter />
+          {/* <SubjectFilter /> */}
         </div>
       </div>
       <div className="flex justify-center items-center flex-wrap gap-6 mt-4">
