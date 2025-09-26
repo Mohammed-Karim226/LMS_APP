@@ -1,14 +1,13 @@
 import Dashboard from "@/components/dashboard/Dashboard";
-import { GetAllCompanions } from "@/lib/companion.actions";
-
 export default async function Home({ searchParams }: SearchParams) {
   const filter = await searchParams;
 
-  const topic = filter.topic ? filter.topic : "";
-  const subject = filter.subject ? filter.subject : "";
+  const topic = Array.isArray(filter.topic)
+    ? filter.topic[0]
+    : filter.topic || "";
+  const subject = Array.isArray(filter.subject)
+    ? filter.subject[0]
+    : filter.subject || "";
 
-  const { companions, error } = await GetAllCompanions({ subject, topic });
-  if (error) return;
-
-  return <Dashboard companions={companions} />;
+  return <Dashboard topic={topic} subject={subject} />;
 }
