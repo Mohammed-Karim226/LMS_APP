@@ -44,6 +44,7 @@ const CompletedLessonsTable = ({
         </TableRow>
       </TableHeader>
       <TableBody>
+        {/* add loader until data is being received */}
         {companions.map((companion) => (
           <TableRow key={companion.id} className="hover:bg-neutral-100/50">
             <TableCell className="flex justify-start items-center">
