@@ -118,7 +118,27 @@ const CompletedLessonsTable = () => {
 
                   {/* Subject Badge */}
                   <TableCell>
-                    <span className="bg-neutral-900 text-white text-sm px-3 py-1 rounded-full shadow-md capitalize">
+                    <span
+                      style={{
+                        background: `linear-gradient(135deg, ${getSubjectColor(
+                          companion.name
+                        )}33, ${getSubjectColor(companion.name)}55)`, // translucent gradient
+                        boxShadow: `0 0 12px ${getSubjectColor(
+                          companion.name
+                        )}55, 
+                  inset 0 0 8px ${getSubjectColor(companion.name)}22`,
+                        backdropFilter: "blur(12px)",
+                        WebkitBackdropFilter: "blur(12px)",
+                      }}
+                      className="relative text-black font-semibold text-sm px-4 py-1.5 rounded-full 
+               capitalize tracking-wide overflow-hidden
+               transition-all duration-500 
+               hover:scale-105 hover:shadow-[0_0_18px_rgba(255,255,255,0.4)]
+               before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent 
+               before:via-white/30 before:to-transparent 
+               before:translate-x-[-100%] hover:before:translate-x-[100%] 
+               before:transition-transform before:duration-1000 before:rounded-full"
+                    >
                       {companion.name}
                     </span>
                   </TableCell>
@@ -131,6 +151,7 @@ const CompletedLessonsTable = () => {
                     </div>
                   </TableCell>
                   <TableCell>
+                    {/* pass a real data */}
                     <CompanionStats />
                   </TableCell>
                 </TableRow>
