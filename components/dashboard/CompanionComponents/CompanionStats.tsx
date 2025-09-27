@@ -46,7 +46,7 @@ export function CompanionStats() {
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button variant="outline" className="cursor-pointer">
+          <Button variant="outline" className="cursor-pointer rounded-full">
             Stats Info
           </Button>
         </DialogTrigger>
