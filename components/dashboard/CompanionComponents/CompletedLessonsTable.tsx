@@ -1,0 +1,144 @@
+"use client";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { getSubjectColor } from "@/lib/utils";
+import Link from "next/link";
+import Image from "next/image";
+import { useSelector } from "react-redux";
+import { TRootState } from "@/store/redux";
+import { Clock } from "lucide-react";
+import { CompanionStats } from "./CompanionStats";
+
+const CompletedLessonsTable = () => {
+  const companions = useSelector((state: TRootState) => state?.companion);
+
+  const TopicsIcons = {
+    maths: "/icons/maths.svg",
+    language: "/icons/language.svg",
+    science: "/icons/science.svg",
+    history: "/icons/history.svg",
+    coding: "/icons/coding.svg",
+    economics: "/icons/economics.svg",
+  };
+
+  const skeletonRows = Array.from({ length: 5 }).map((_, i) => (
+    <TableRow key={i} className="animate-pulse hover:bg-transparent">
+      <TableCell>
+        <div className="flex items-center gap-4">
+          <div className="bg-gray-300 w-12 h-12 rounded-lg shadow-md" />
+          <div className="flex flex-col gap-2">
+            <div className="bg-gray-300 h-5 w-32 rounded" />
+            <div className="bg-gray-200 h-4 w-24 rounded" />
+          </div>
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="bg-gray-300 h-6 w-20 rounded-full" />
+      </TableCell>
+      <TableCell>
+        <div className="bg-gray-300 h-6 w-12 rounded" />
+      </TableCell>
+      <TableCell>
+        <div className="bg-gray-300 h-6 w-16 rounded-full" />
+      </TableCell>
+    </TableRow>
+  ));
+
+  return (
+    <Table className="min-w-[800px]">
+      <TableHeader className="bg-white/80 backdrop-blur-md sticky top-0 z-10 shadow-sm rounded-t-2xl">
+        <TableRow>
+          <TableHead className="text-lg font-semibold text-neutral-900">
+            Lesson
+          </TableHead>
+          <TableHead className="text-lg font-semibold text-neutral-900">
+            Subject
+          </TableHead>
+          <TableHead className="text-lg font-semibold text-neutral-900">
+            Duration
+          </TableHead>
+          <TableHead className="text-lg font-semibold text-neutral-900">
+            Stats
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {companions.length === 0
+          ? skeletonRows
+          : companions.map((companion) => {
+              // trial data for enhanced stats
+              // const completion = Math.floor(Math.random() * 100) + 1; // example
+              // const score = Math.floor(Math.random() * 100) + 1;
+              // const lessonsDone = Math.floor(Math.random() * 10) + 1;
+
+              return (
+                <TableRow
+                  key={companion.id}
+                  className="hover:bg-gray-50 transition-all rounded-lg cursor-pointer"
+                >
+                  {/* Lesson Info */}
+                  <TableCell>
+                    <Link href={`/companions/${companion.id}`}>
+                      <div className="flex items-center gap-4">
+                        <div
+                          style={{
+                            backgroundColor: getSubjectColor(companion.name),
+                          }}
+                          className="w-12 h-12 rounded-lg flex justify-center items-center shadow-md"
+                        >
+                          <Image
+                            src={
+                              TopicsIcons[
+                                companion.name.toLowerCase() as keyof typeof TopicsIcons
+                              ]
+                            }
+                            alt={companion.name}
+                            width={32}
+                            height={32}
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <span className="text-lg font-bold text-neutral-900 capitalize">
+                            {companion.name}
+                          </span>
+                          <span className="text-sm font-normal text-neutral-500 capitalize">
+                            Topic: {companion.topic}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </TableCell>
+
+                  {/* Subject Badge */}
+                  <TableCell>
+                    <span className="bg-neutral-900 text-white text-sm px-3 py-1 rounded-full shadow-md capitalize">
+                      {companion.name}
+                    </span>
+                  </TableCell>
+
+                  {/* Duration */}
+                  <TableCell>
+                    <div className="flex items-center gap-2 text-sm font-medium text-neutral-700">
+                      <Clock className="w-4 h-4 text-neutral-500" />
+                      <span>{companion.duration} mins</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <CompanionStats />
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+      </TableBody>
+    </Table>
+  );
+};
+
+export default CompletedLessonsTable;

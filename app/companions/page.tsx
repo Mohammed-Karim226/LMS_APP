@@ -1,8 +1,8 @@
-import { AlertTriangle } from "lucide-react";
-import { GetAllCompanions } from "@/lib/companion.actions";
-import CompanionCards from "@/components/dashboard/CompanionCards/CompanionCards";
-import { getSubjectColor } from "@/lib/utils";
+import CompanionCards from "@/components/dashboard/CompanionComponents/CompanionCards";
 import SearchInput from "@/components/dashboard/Filters/SearchInput";
+import { GetAllCompanions } from "@/lib/companion.actions";
+import { getSubjectColor } from "@/lib/utils";
+import { AlertTriangle } from "lucide-react";
 // import SubjectFilter from "@/components/dashboard/Filters/SubjectFilter";
 
 const CompanionsLibrary = async ({ searchParams }: SearchParams) => {

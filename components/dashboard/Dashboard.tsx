@@ -1,13 +1,13 @@
 "use client";
+import { setCompanion } from "@/features/companionSlice/CompanionSlice";
+import { GetAllCompanions } from "@/lib/companion.actions";
 import { getSubjectColor } from "@/lib/utils";
-import CalledToAction from "./CompanionCards/CalledToAction";
-import CompanionCards from "./CompanionCards/CompanionCards";
-import CompletedLessonsTable from "./CompanionCards/CompletedLessonsTable";
+import { TRootState } from "@/store/redux";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAllCompanions } from "@/lib/companion.actions";
-import { setCompanion } from "@/features/companionSlice/CompanionSlice";
-import { TRootState } from "@/store/redux";
+import CalledToAction from "./CompanionComponents/CalledToAction";
+import CompanionCards from "./CompanionComponents/CompanionCards";
+import CompletedLessonsTable from "./CompanionComponents/CompletedLessonsTable";
 
 const Dashboard = ({ topic, subject }: { topic: string; subject: string }) => {
   const dispatch = useDispatch();
