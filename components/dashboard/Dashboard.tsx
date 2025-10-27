@@ -3,7 +3,7 @@ import { setCompanion } from "@/features/companionSlice/CompanionSlice";
 import { GetAllCompanions } from "@/lib/companion.actions";
 import { getSubjectColor } from "@/lib/utils";
 import { TRootState } from "@/store/redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CalledToAction from "./CompanionComponents/CalledToAction";
 import CompanionCards from "./CompanionComponents/CompanionCards";
@@ -11,12 +11,15 @@ import CompletedLessonsTable from "./CompanionComponents/CompletedLessonsTable";
 
 const Dashboard = ({ topic, subject }: { topic: string; subject: string }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getdata = async () => {
       try {
+        setLoading(true);
         const companionsData = await GetAllCompanions({ subject, topic });
         dispatch(setCompanion(companionsData?.companions || []));
+        setLoading(false);
       } catch (error: unknown) {
         const e = error as Error;
         throw new Error(e.message || "Failed to fetch companions data");
@@ -33,11 +36,20 @@ const Dashboard = ({ topic, subject }: { topic: string; subject: string }) => {
         <h1 className="font-bold text-3xl max-sm:text-2xl">Dashboard</h1>
       </div>
       {/* add loader until data is being received */}
-      {companions.length === 0 ? (
+      {loading ? (
         <div className="flex justify-center items-center w-full h-40">
           <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
           <span className="ml-4 text-lg font-medium text-gray-600">
             Loading...
+          </span>
+        </div>
+      ) : companions.length === 0 ? (
+        <div className="flex flex-col justify-center items-center w-full h-40 text-center">
+          <span className="text-gray-500 text-lg font-medium">
+            No companions found for this topic or subject.
+          </span>
+          <span className="text-sm text-gray-400 mt-2">
+            Try creating one or explore a different subject.
           </span>
         </div>
       ) : (
