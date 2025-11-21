@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppProvider from "@/providers/AppProvider";
 import Navbar from "@/components/layouts/navbar/Navbar";
+import { Toaster } from "react-hot-toast";
 
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -35,6 +36,7 @@ export default function RootLayout({
           <AppProvider>
             <Navbar />
             {children}
+            <Toaster />
           </AppProvider>
         </ClerkProvider>
       </body>

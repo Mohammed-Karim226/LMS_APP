@@ -38,6 +38,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createCompanion } from "@/lib/companion.actions";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 // import { useDispatch } from "react-redux";
 // import { createCompanionThunk } from "@/features/actions/companion.actions";
@@ -70,6 +73,8 @@ const formSchema = z.object({
 
 const CalledToAction = () => {
   // const dispatch = useDispatch<TAppDispatch>();
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,9 +107,12 @@ const CalledToAction = () => {
         throw new Error("User not authonticated.");
       }
       form.reset();
+      setOpen(false);
+      toast.success("Companion created successfully!");
+      router.refresh();
     } catch (error) {
       const err = error as { message: string };
-      console.log("error from form: ", err);
+      toast.error(err.message || "Something went wrong. Please try again.");
     }
   }
 
@@ -128,7 +136,7 @@ const CalledToAction = () => {
         height={232}
         className="mb-3"
       />
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button
             variant="outline"

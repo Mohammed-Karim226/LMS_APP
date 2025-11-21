@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterSlice from "@/features/counter/counterSlice";
-import companionSlice from "@/features/counter/companionSlice";
+import companionSlice from "@/features/companionSlice/CompanionSlice";
 
 // Configure and export the store as a constant
 export const store = configureStore({

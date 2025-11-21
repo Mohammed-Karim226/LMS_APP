@@ -1,39 +1,73 @@
-import CalledToAction from "./CompanionCards/CalledToAction";
-import CompanionCards from "./CompanionCards/CompanionCards";
-import CompletedLessonsTable from "./CompanionCards/CompletedLessonsTable";
+"use client";
+import { setCompanion } from "@/features/companionSlice/CompanionSlice";
+import { GetAllCompanions } from "@/lib/companion.actions";
+import { getSubjectColor } from "@/lib/utils";
+import { TRootState } from "@/store/redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import CalledToAction from "./CompanionComponents/CalledToAction";
+import CompanionCards from "./CompanionComponents/CompanionCards";
+import CompletedLessonsTable from "./CompanionComponents/CompletedLessonsTable";
 
-const Dashboard = () => {
+const Dashboard = ({ topic, subject }: { topic: string; subject: string }) => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getdata = async () => {
+      try {
+        setLoading(true);
+        const companionsData = await GetAllCompanions({ subject, topic });
+        dispatch(setCompanion(companionsData?.companions || []));
+        setLoading(false);
+      } catch (error: unknown) {
+        const e = error as Error;
+        throw new Error(e.message || "Failed to fetch companions data");
+      }
+    };
+    getdata();
+  }, [topic, subject, dispatch]);
+
+  const companions = useSelector((state: TRootState) => state?.companion);
+
   return (
-    <section className="flex flex-col justify-start items-start h-screen mt-20 bg-slate-50 gap-6 px-12 py-6 max-sm:px-4 mx-auto max-sm:items-center">
+    <section className="flex flex-col justify-start items-start h-full mt-20 bg-slate-50 gap-6 px-12 py-10 max-sm:px-4 mx-auto max-sm:items-center">
       <div className="flex justify-start items-start max-sm:w-full">
         <h1 className="font-bold text-3xl max-sm:text-2xl">Dashboard</h1>
       </div>
-      <div className="flex flex-wrap justify-start items-start gap-6 max-sm:gap-4 max-sm:justify-center max-sm:items-center w-full">
-        <CompanionCards
-          id={`1`}
-          title="Title"
-          name="Subject Name"
-          topic="Sample Topic"
-          duration={30}
-          color="E5D0FF"
-        />
-        <CompanionCards
-          id={`2`}
-          title="Title"
-          name="Subject Name"
-          topic="Sample Topic"
-          duration={30}
-          color="FFDA6E"
-        />
-        <CompanionCards
-          id={`3`}
-          title="Title"
-          name="Subject Name"
-          topic="Sample Topic"
-          duration={30}
-          color="BDE7FF"
-        />
-      </div>
+      {/* add loader until data is being received */}
+      {loading ? (
+        <div className="flex justify-center items-center w-full h-40">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
+          <span className="ml-4 text-lg font-medium text-gray-600">
+            Loading...
+          </span>
+        </div>
+      ) : companions.length === 0 ? (
+        <div className="flex flex-col justify-center items-center w-full h-40 text-center">
+          <span className="text-gray-500 text-lg font-medium">
+            No companions found for this topic or subject.
+          </span>
+          <span className="text-sm text-gray-400 mt-2">
+            Try creating one or explore a different subject.
+          </span>
+        </div>
+      ) : (
+        <div className="flex flex-wrap justify-start items-start gap-6 max-sm:gap-4 max-sm:justify-center max-sm:items-center w-full">
+          {companions.slice(0, 8).map((companion: ICompanion) => (
+            <CompanionCards
+              key={companion.id}
+              id={companion.id}
+              title={companion.name}
+              name={companion.subject}
+              topic={companion.topic}
+              duration={companion.duration}
+              color={getSubjectColor(companion.name.toLowerCase())}
+              isMarked={false}
+            />
+          ))}
+        </div>
+      )}
       <div className="flex justify-between items-start w-full max-sm:flex-col max-xl:flex-col max-sm:items-start gap-6 mt-4 px-4 sm:px-6 lg:px-8">
         <div className="flex justify-start items-start flex-col gap-3 w-full px-4 py-3 rounded-2xl border border-black">
           <h1 className="font-bold text-3xl max-sm:text-xl">
