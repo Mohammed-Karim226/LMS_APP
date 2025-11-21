@@ -26,7 +26,7 @@ const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
       </div>
     );
   }
-  console.log(companions);
+  // console.log(companions);
 
   return (
     <div className="mt-28 flex flex-col justify-center items-center px-6 gap-2 relative">
